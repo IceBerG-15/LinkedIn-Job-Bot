@@ -25,7 +25,7 @@ save=driver.find_element('xpath','//*[@id="main"]/div/section[2]/div/div[2]/div[
 save.click()
 
 follow=driver.find_element('xpath','//*[@id="ember300"]/section/div[1]/div[1]/button/span')
-print(follow.text)
+follow.click()
 
 
 time.sleep(60)
