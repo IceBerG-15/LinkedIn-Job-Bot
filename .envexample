@@ -1,0 +1,3 @@
+#change the file name to env when running.
+EMAIL=YOUR_EMAIL_WITHOUT_QUOTES
+PASS=YOUR_EMAIL_PASSWORD
