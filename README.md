@@ -14,5 +14,5 @@ Modules used:
 Changes you have to make before running the program:
 1. location of .env file in load_dotenv()
 2. URL of website
-
+3. change the name of .envexample to .env and add your email and password
 
