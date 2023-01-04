@@ -1,38 +1,32 @@
-import requests
-import lxml
-from bs4 import BeautifulSoup
-from smtplib import SMTP
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import os
 from dotenv import load_dotenv
-load_dotenv('projects\price tracker\.env')
 
-my_email=os.getenv('EMAIL')
-password=os.getenv('PASS')
+load_dotenv('projects\Automating jobs on LinkedIn\.env')
 
-URL='https://www.amazon.com/Instant-Vortex-Plus-Air-Fryer/dp/B07VHFMZHJ/ref=nav_signin?crid=1KA2DNVL2LK47&keywords=air+fyer&qid=1672237796&sprefix=air+fye%2Caps%2C303&sr=8-3&claim_type=EmailAddress&new_account=1&'
-header={
-    'Accept-Language':'en-US,en;q=0.5',
-    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-}
+chrome_driver_path="C:\\Python310\\chrome_driver\\chromedriver.exe"
+driver=webdriver.Chrome(executable_path=chrome_driver_path)
 
-response=requests.get(url=URL,headers=header)
-response.encoding='utf-8'
+driver.get('https://www.linkedin.com/jobs/search/?currentJobId=3424115353&f_LF=f_AL&geoId=102257491&keywords=python%20developer&location=London%2C%20England%2C%20United%20Kingdom')
 
-soup=BeautifulSoup(response.text,'lxml')
-# print(soup.title)
-price=float(soup.find(name='span',class_='a-offscreen').text[1:])
-print(price)
+sign_in=driver.find_element('xpath','/html/body/div[1]/header/nav/div/a[2]')
+sign_in.click()
 
-'''user's lowest price, if lower than this price then we'll send email to user'''
-user_price=130
-if price<user_price:
-    with SMTP('smtp.gmail.com',port=587) as connection:
-            connection.starttls()
-            connection.login(user=my_email,password=password)
-            connection.sendmail(
-                from_addr=my_email,
-                to_addrs='warmachiness13@gmail.com',
-                msg=f'Subject:Air Fryer Price drop alert \n\n The price for the Air Fryer is ${price}.Hurry, Buy Now'
-            )
+user_email=driver.find_element('xpath','//*[@id="username"]')
+user_email.send_keys(os.getenv('EMAIL'))
+
+password=driver.find_element('xpath','//*[@id="password"]')
+password.send_keys(os.getenv('PASS'))
+password.send_keys(Keys.ENTER)
+
+save=driver.find_element('xpath','//*[@id="main"]/div/section[2]/div/div[2]/div[1]/div/div[1]/div/div[1]/div[1]/div[3]/div/button')
+save.click()
+
+follow=driver.find_element('xpath','//*[@id="ember300"]/section/div[1]/div[1]/button/span')
+print(follow.text)
 
 
+time.sleep(60)
+driver.quit()
